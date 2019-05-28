@@ -46,11 +46,13 @@ class RipDevilBot(bot.Bot):
   
             
     def execute(self):
+        
         try:
-           self.t.sendTweet("mate")
-            #while(True):
-                
-                #self.morgan_freeman()
+            while True:
+                self.t.sendTweet("RIP DEVIL")
+                time.sleep(1200)
+           
+            
                 
         except KeyboardInterrupt:
             sys.exit();                           

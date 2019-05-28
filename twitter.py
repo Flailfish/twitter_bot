@@ -65,8 +65,8 @@ class Twitter:
             #media_id = filehandling.readFromFile(savePath)
             print(media_id)
             #print(media_id[1])
-            tweet = self.api.update_status(status = text,media_ids = media_id) #create new tweet
-            print(tweet)        #print tweet for debugging.
+            tweet = self.api.update_status(status = text,media_ids = media_id) 
+            print(tweet)        
         #except tweepy.TweepError:
             #print('Error sending tweet') #handle errors
         
