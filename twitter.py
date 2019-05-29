@@ -72,28 +72,22 @@ class Twitter:
             print('Unable to retweet..') #handle errors 
         
     def mentionSearch(self): #poll mentions.. search for new mentions
-        lastMention = filehandling.readLastMention() #read last mention from file
+        lastMention = filehandling.readLastMention() #read last mention from file check if it's the most recent
         try:
-            #while True:
-            
-                mentions = self.api.mentions_timeline(since_id = lastMention) #grab the latest mention not responded to
+                mentions = self.api.mentions_timeline(since_id = lastMention) 
                 for mention in mentions:
-
-                    if ((mention.user.screen_name).__eq__('ismynanTwitch')): #only respond to this user
-                        if lastMention == mention.id: #if the latest mention responded to = the latest mention
+                    if lastMention == mention.id: #if the latest mention responded to = the latest mention
                             pass #there are no new mentions.
-                        elif(lastMention != (mention.id)): #if the last mention is not the same as the latest
-                                
-                                self.parseCommand(mention.text) #grab and parse command from tweet
-                                lastMention = mention.id #lastMention = the tweet we just responded to
+                    elif(lastMention != (mention.id)): #if the mention is not the same as the latest
+                        lastMention = mention.id #lastMention = the tweet we just responded to
 
-                                filehandling.writeLastMentionToFile(lastMention) #write last mention to file now
+                        filehandling.writeLastMentionToFile(lastMention) #write last mention to file now
                                 #just in case the execution fails for some reason
-                        
-                    time.sleep(15)              #wait for 15 seconds as not to exceed twitters rate limit
-                    return lastMention
-               
-         
+                                                       
+                time.sleep(600)  #wait for 600 seconds as not to exceed twitters rate limit
+                return lastMention
+
+  
         except tweepy.RateLimitError: # handle errors such as rate limiting errors (eventually)
             print("Rate limit exceeded.. waiting 15 minutes.")
             rate_limit_errors+= 1
