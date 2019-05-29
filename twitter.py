@@ -69,20 +69,7 @@ class Twitter:
         try:
             self.api.retweet(tId); #retweet tweet id
         except tweepy.TweepError:
-            print('Unable to retweet..') #handle errors
-        
-    def sendCommand(self,com, arg): #do actions based on the command sent - more will be added
-        if (com.lower()).__eq__('retweet'): #if command is 'retweet' then retweet the tweet
-            self.retweet(arg) #arg is the command arguments (tweet id in this case)
-    
-#handle cmd arg     
-    def parseCommand(self,command): #parses the command
-        st = command.split(' ', 3) # the tweet is split into 3 sections - shown above
-        cmd = st[1] #index 1 is the command
-        args = st[2] #index 2 is the arguments. index 0 is the handle of sender - already accounted for
-
-        self.sendCommand(cmd,args) #run command
-    
+            print('Unable to retweet..') #handle errors 
         
     def mentionSearch(self): #poll mentions.. search for new mentions
         lastMention = filehandling.readLastMention() #read last mention from file
