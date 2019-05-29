@@ -7,10 +7,10 @@ keycrypto.py
 handles encrypting and decrypting of keys using AES
 encodes the keys in base64 for easier manipulation
 '''
+import Crypto
 from Crypto.Cipher import AES
 from Crypto.Util import Padding
 import base64
-
    
 def encode(data,key):
         newkey = base64.b64decode(key)

@@ -14,7 +14,7 @@ import keycrypto
 def main():     
         
     
-    rdb = DevilBot.RipDevilBot(r'C:\Users\Derek\Documents\LiClipse Workspace\twitter\src\fred.dat',r'C:\Users\Derek\Documents\LiClipse Workspace\twitter\src\devillastmention.dat',r'C:\Users\Derek\Documents\LiClipse Workspace\twitter\src\lastresponse.dat',r'C:\Users\Derek\Documents\LiClipse Workspace\twitter\src\devilmedia.dat')
+    rdb = DevilBot.RipDevilBot(r'C:\Users\Derek\Source\repos\twitter_bot\fred.dat',r'C:\Users\Derek\Source\repos\twitter_bot\devillastmention.dat',r'C:\Users\Derek\Source\repos\twitter_bot\lastresponse.dat',r'C:\Users\Derek\Source\repos\twitter_bot\devilmedia.dat')
     rdb.execute()
     
     

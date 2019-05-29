@@ -104,4 +104,6 @@ def readLatestRespondedTo(respond_path):
         print("Read latest response " + lastResponse + " from " + respond_path)
         respond_file.close()
         return lastResponse
+
+
         

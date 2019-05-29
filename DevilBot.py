@@ -10,6 +10,8 @@ import sys
 import filehandling
 import os
 import download
+import createimage as c
+import random
 
 class RipDevilBot(bot.Bot):
     
@@ -26,31 +28,18 @@ class RipDevilBot(bot.Bot):
         print(tweets)
         
         return tweets
-           
-            
-    def morgan_freeman(self):
-        
-        freeman_path = r'C:\Users\Derek\My Documents\LiClipse Workspace\twitter\src\freeman.png'
-        if(os.path.exists(freeman_path)):
-            tweets = self.tweetSearch('morgan%20or%20freeman')
-                
-            for tweet in tweets:
-                time.sleep(600)
-            #for url in tweet.entities['urls']:
-                url = r'http://twitter.com/' + tweet.user.screen_name + r'/status/' + tweet.id_str
-                print(url)
-                text = '#morganfreeman\n' + url
-                self.t.tweetWithImage(text, freeman_path,self.media_path)
-                
-        filehandling.writeLatestRespondedTo(tweet.id_str, self.last_response_path)
   
             
     def execute(self):
         
         try:
+            #self.t.sendTweet("So are mountains.")
             while True:
-                self.t.sendTweet("RIP DEVIL")
-                time.sleep(1200)
+                time.sleep(21600)
+                c.create_image(1,1,1)
+                self.t.tweetWithImage(" ","bob.png","4")
+                
+
            
             
                 

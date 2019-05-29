@@ -10,7 +10,7 @@ import tweepy
 import time
 import filehandling
 import keycrypto
-user = '@ismynanTwitch'
+user = '@imthebestnan'
 rate_limit_errors = 0;
 
 class Twitter:
@@ -23,20 +23,7 @@ class Twitter:
     def readPublicTweets(self): 
         publicTweets = self.api.home_timeline() 
         for publicTweet in publicTweets:
-            print(publicTweet.text) 
-        
-
-    def sendTweetTo(self,handle,text): 
-    
-        try:
-            tweet = self.api.update_status(handle + " " + text) 
-            tweetId = tweet.id 
-            print(tweet)        
-        except tweepy.TweepError:
-                
-                print('Error sending tweet') 
-        
-                
+            print(publicTweet.text)             
                 
     def sendTweet(self,text): 
     
@@ -44,9 +31,8 @@ class Twitter:
             tweet = self.api.update_status(text) 
             tweetId = tweet.id 
             print(tweet)        
-        except tweepy.TweepError:
-                raise tweepy.TweepError
-                print('Error sending tweet') 
+        except tweepy.TweepError as e:
+                print(e.response.text) 
                 
     def uploadImage(self,path,savePath):
         #try:
@@ -105,29 +91,28 @@ class Twitter:
             
                 mentions = self.api.mentions_timeline(since_id = lastMention) #grab the latest mention not responded to
                 for mention in mentions:
-                    print(mention.text)
-                    print(mention.user.screen_name)
+
                     if ((mention.user.screen_name).__eq__('ismynanTwitch')): #only respond to this user
                         if lastMention == mention.id: #if the latest mention responded to = the latest mention
-                            pass #there are no new mentions.. so do nothing
-                            print('no new mentions')
+                            pass #there are no new mentions.
                         elif(lastMention != (mention.id)): #if the last mention is not the same as the latest
-                                print(mention.text) #there are mentions we haven't responded to.. so respond to them
+                                
                                 self.parseCommand(mention.text) #grab and parse command from tweet
                                 lastMention = mention.id #lastMention = the tweet we just responded to
-                                print(lastMention)
-                                print(mention.id)
+
                                 filehandling.writeLastMentionToFile(lastMention) #write last mention to file now
                                 #just in case the execution fails for some reason
                         
-                    time.sleep(15)              #wait for 15 seconds as not to exceed twitters rate limit         
+                    time.sleep(15)              #wait for 15 seconds as not to exceed twitters rate limit
+                    return lastMention
+               
          
         except tweepy.RateLimitError: # handle errors such as rate limiting errors (eventually)
             print("Rate limit exceeded.. waiting 15 minutes.")
             rate_limit_errors+= 1
             print('Rate limiting errors: ' + rate_limit_errors)
             time.sleep(900) #sleep for 15 minutes
-            self.mentionSearch()
+            
 
     def searchTweet(self,query,number,age):
         if age > 0:

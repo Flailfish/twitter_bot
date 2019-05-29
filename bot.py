@@ -14,7 +14,7 @@ class Bot:
     def __init__(self,key_path,mention_path):
         self.keyPath = key_path
         self.mentionPath = mention_path 
-        self.keys = filehandling.readKeysFromFile(key_path)
+        self.keys = filehandling.readFromFile(key_path)
         print(self.keys)
         self.cSecret = keycrypto.decode(self.keys[0],self.keys[4]) 
         self.cToken = keycrypto.decode(self.keys[1],self.keys[4])
