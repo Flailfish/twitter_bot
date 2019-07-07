@@ -9,11 +9,38 @@ def grab_word():
     print(word)
     return word
 
+def text_wrap(text, font, max_width):
+
+    lines = []
+   
+    if font.getsize(text)[0] <= max_width:
+        lines.append(text) 
+    else:
+        words = text.split(' ')  
+        i = 0
+        while i < len(words):
+            line = ''         
+            while i < len(words) and font.getsize(line + words[i])[0] <= max_width:                
+                line = line + words[i] + " "
+                i += 1
+            if not line:
+                line = words[i]
+                i += 1
+ 
+            lines.append(line)    
+    return lines
+
+
 def create_image(fonts,location,text):
-    im = Image.open("C:\\Users\\Derek\\Pictures\\bobbob.jpg")
-    font = ImageFont.truetype("C:\\Windows\Fonts\\impact.ttf", 75)
+    im = Image.open("bobpaint.jpg")
+    im_size = im.size
+    font = ImageFont.truetype("C:\\Windows\Fonts\\impact.ttf", 50)
+    lines = text_wrap("Happy little " + grab_word(), font, 365-90)
+    line_height = font.getsize('hg')[1]
     draw = ImageDraw.Draw(im)
-    draw.text((60, 50), "Happy little " + grab_word(), font=font)
-    draw = ImageDraw.Draw(im)
-    
-    im.save("bob.png")
+    x = 90
+    y = 70
+    for line in lines:
+        draw.text((x,y), line, fill=(0,0,0,0),font = font)
+        y = y + line_height
+    im.save("bob_paint.jpg")

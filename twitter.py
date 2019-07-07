@@ -19,7 +19,6 @@ class Twitter:
         self.auth = auth
         self.api = api
         
-
     def readPublicTweets(self): 
         publicTweets = self.api.home_timeline() 
         for publicTweet in publicTweets:
@@ -34,30 +33,25 @@ class Twitter:
         except tweepy.TweepError as e:
                 print(e.response.text) 
                 
-    def uploadImage(self,path,savePath):
-        #try:
+    def uploadImage(self,path):
+        try:
             images = (path)
             media = [self.api.media_upload(images).media_id]
-            filehandling.appendToFile(media,savePath)
             print(media)
             return media
-        #except tweepy.TweepError:
+        except tweepy.TweepError as e:
+            print(e.response.text)
         
                 
-    def tweetWithImage(self,text,imagePath,savePath): 
+    def tweetWithImage(self,text,imagePath): 
     
-        #try:
-            media_id = self.uploadImage(imagePath, savePath)
-            #media_id = filehandling.readFromFile(savePath)
-            print(media_id)
-            #print(media_id[1])
-            tweet = self.api.update_status(status = text,media_ids = media_id) 
+        try:
+            media_id = self.uploadImage(imagePath)
+            tweet = self.api.update_status(status = text, media_ids = media_id) 
             print(tweet)        
-        #except tweepy.TweepError:
-            #print('Error sending tweet') #handle errors
-        
-                
-        
+        except tweepy.TweepError as ex:
+            print(ex.response.text) 
+             
     def favouriteTweet(self,fTweetId):
         try:
             self.api.create_favorite(fTweetId); #favourite the tweet given the tweetId
@@ -70,32 +64,35 @@ class Twitter:
             self.api.retweet(tId); #retweet tweet id
         except tweepy.TweepError:
             print('Unable to retweet..') #handle errors 
+
+
         
-    def mentionSearch(self): #poll mentions.. search for new mentions
-        lastMention = filehandling.readLastMention() #read last mention from file check if it's the most recent
+    def get_new_mentions(self,mention_file): #poll mentions.. search for new mentions
+        
+        known_mentions = filehandling.readFromFile(mention_file) #read last mention from file check if it's the most recent
+        print('hhh')
+        #we need to store the most recent mention in a file just incase the bot crashes - otherwise it will respond to mentions multiple times.
         try:
-                mentions = self.api.mentions_timeline(since_id = lastMention) 
+            new_mentions = []
+            mentions = self.api.mentions_timeline(since_id = int(known_mentions[0]))
+            if (len(mentions) > 0):
+                
                 for mention in mentions:
-                    if lastMention == mention.id: #if the latest mention responded to = the latest mention
-                            pass #there are no new mentions.
-                    elif(lastMention != (mention.id)): #if the mention is not the same as the latest
-                        lastMention = mention.id #lastMention = the tweet we just responded to
+                    new_mentions.append(mention.id)
+                return new_mentions
+                    
+            else:
+                print("no new mentions")
+                return None
 
-                        filehandling.writeLastMentionToFile(lastMention) #write last mention to file now
-                                #just in case the execution fails for some reason
-                                                       
-                time.sleep(600)  #wait for 600 seconds as not to exceed twitters rate limit
-                return lastMention
-
-  
-        except tweepy.RateLimitError: # handle errors such as rate limiting errors (eventually)
+        except (tweepy.RateLimitError, Exception) as e: # handle errors such as rate limiting errors (eventually) but probably not
+            print(e)
             print("Rate limit exceeded.. waiting 15 minutes.")
-            rate_limit_errors+= 1
-            print('Rate limiting errors: ' + rate_limit_errors)
+            
             time.sleep(900) #sleep for 15 minutes
             
 
-    def searchTweet(self,query,number,age):
+    def searchTweet(self,query,number,age): #search for tweets that match a specified search query - tweet age can be specified and # of tweets
         if age > 0:
             tweet_list = self.api.search(q = query, count = number, include_entities = True,result_type = 'mixed', since_id = age)
         elif age == 0:
