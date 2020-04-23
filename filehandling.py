@@ -8,13 +8,9 @@ This module is meant for doing the file handling
 eg. writing the keys to a file, writing the last mention to a file, and reading them
 '''
 
-
-
 def appendToFile(data,file): 
-    try:
-        
-        f = open(file, 'a') 
-        
+    try:   
+        f = open(file, 'a')        
     except IOError: 
         print("Could not write to file " + file);
     else: 
@@ -23,10 +19,8 @@ def appendToFile(data,file):
         f.close()
         
 def writeToFile(data,file): 
-    try:
-        
-        f = open(file, 'w') 
-        
+    try:    
+        f = open(file, 'w')      
     except IOError: 
         print("Could not write to file " + file);
     else:
@@ -44,11 +38,10 @@ def readFromFile(file):
         data = []
         data = f.read().splitlines() 
         print('Read from file ' + file + ": "+ str(data))
-        f.close() 
-        
+        f.close()  
     return (data);
         
-def writeKeyToFile(key,keyPath): # at some point add the ability to clear the file first
+def writeKeyToFile(key,keyPath): 
     try: 
         contents = key.decode('utf-8') + '\n' #convert the key(byte) to string (utf-8 encoding)
         key_file = open(keyPath,'a') 
@@ -58,9 +51,4 @@ def writeKeyToFile(key,keyPath): # at some point add the ability to clear the fi
         key_file.write(contents) 
         print(contents + ' written to ' + keyPath) 
         key_file.close() 
-        
-
-
-
-
         
