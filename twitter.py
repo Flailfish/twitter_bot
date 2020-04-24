@@ -10,7 +10,7 @@ import tweepy
 import time
 import filehandling
 import keycrypto
-user = '@imthebestnan'
+user = '--------'
 rate_limit_errors = 0;
 
 class Twitter:
